@@ -1334,7 +1334,7 @@
 #include "code\modules\food\recipes_microwave.dm"
 #include "code\modules\games\cards\playing_cards.dm"
 #include "code\modules\games\cards\wizard_cards.dm"
-#include "code\modules\games\cards\ygo\ygo_cards.dm"
+#include "code\modules\games\cards\ygo\dm_cards.dm"
 #include "code\modules\games\cards\ygo\sets\duelistgenes.dm"
 #include "code\modules\genetics\side_effects.dm"
 #include "code\modules\html_interface\html_interface.dm"

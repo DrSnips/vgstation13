@@ -10,6 +10,7 @@
 	var/list/setcommons
 	var/list/setrares
 	var/list/setultrarares
+	var/list/setsecretrares
 
 /obj/item/toy/cards/dm/New()
 	..()
@@ -23,17 +24,16 @@
 	var/obj/item/toy/singlecard/dm/newcard = new card(src)
 	newcard.setname = setname
 	cards += newcard
-	if(prob(20)) //Chance for an ultra rare.
+	if(prob(20)) //Chance for an ultra/secret rare.
 		card = pick(setultrarares)
-		newcard = new card(src)
-		newcard.setname = setname
-		cards += newcard
+	else if(prob(10))
+		card = pick(setsecretrares)
 	else
 		card = pick(setcommons)
-		newcard = new card(src)
-		newcard.setname = setname
-		cards += newcard
-	for(var/i = 1; i <= 3; i++) //The rest are common.
+	newcard = new card(src)
+	newcard.setname = setname
+	cards += newcard
+	for(var/i = 0 to 3) //The rest are common.
 		card = pick(setcommons)
 		newcard = new card(src)
 		newcard.setname = setname
@@ -61,10 +61,9 @@
 	var/cardrequirements //Extradecks only.
 	var/cardeffect
 	var/cardatk = 0
-	var/carddef = 0 //If it's a link "Link-X" will work.
+	var/carddef = 0 //If it's a link put "Link-#"
 	var/formatteddesc //Don't fill out this.
-/* For easy copypaste. Fill out as much as you can and it will format the desc for you. For rank/level you need to paste &#9734; for each star, no spaces, in the respective area.
-
+/* For easy copy/pasting vars later.
 	cardlevel
 	cardrank
 	cardtype
@@ -73,7 +72,6 @@
 	cardeffect
 	cardatk
 	carddef
-
 */
 /obj/item/toy/singlecard/dm/New()
 	..()
@@ -82,11 +80,15 @@
 	if(rarity && (rarity != "common"))
 		foileffect = image('icons/obj/dm_cards.dmi',rarity)
 	update_icon()
+	var/starcount = ""
 	if(cardlevel)
-
-		cardstars = "<font color='orange'>[cardlevel]</font>"
+		for(var/i = 1 to cardlevel)
+			starcount += "&#9734;"
+		cardstars = "<font color='orange'>[starcount]</font>"
 	else if(cardrank)
-		cardstars = "<font color='black'>[cardrank]</font>"
+		for(var/i = 1 to cardrank)
+			starcount += "&#9734;"
+		cardstars = "<font color='black'>[starcount]</font>"
 	formatteddesc = "[cardstars], [cardtype], <b>[cardattribute]</b><br>[cardrequirements ? "{[cardrequirements]}<br>" : ""][cardeffect]<br><font color='red'>[cardatk]</font>/<font color='blue'>[carddef]</font>"
 
 
