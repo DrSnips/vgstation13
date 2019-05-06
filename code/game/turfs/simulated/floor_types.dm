@@ -82,6 +82,27 @@
 	floor_tile = getFromPool(/obj/item/stack/tile/wood,null)
 	..()
 
+/turf/simulated/floor/tatami
+	name = "Tatami Mat"
+	icon_state = "tatami_V"
+	floor_tile
+	autoignition_temperature = AUTOIGNITION_WOOD
+	fire_fuel = 10
+	soot_type = null
+	melt_temperature = 0
+	var/style = /turf/simulated/floor/tatami
+
+/turf/simulated/floor/tatami/New()
+	if(floor_tile)
+		returnToPool(floor_tile)
+		floor_tile = null
+	floor_tile = getFromPool(style, null)
+	..()
+
+/turf/simulated/floor/tatami/turned
+	icon_state = "tatami_H"
+	style = /turf/simulated/floor/tatami
+
 /turf/simulated/floor/vault
 	icon_state = "rockvault"
 

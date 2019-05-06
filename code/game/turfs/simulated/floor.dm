@@ -177,6 +177,13 @@ turf/simulated/floor/update_icon()
 			if( !(icon_state in wood_icons) )
 				icon_state = "wood"
 //				to_chat(world, "[icon_state]y's got [icon_state]")
+	else if(is_tatami_floor())
+		if(!broken && !burnt)
+			var/obj/item/stack/tile/tatami/T = floor_tile
+			if(T.style) //TRUE and FALSE indicate Vertical or Horizontal respectively.
+				icon_state = "tatami_V"
+			else
+				icon_state = "tatami_H"
 	else if(is_mineral_floor())
 		if(!broken && !burnt)
 			icon_state = floor_tile.material
@@ -227,54 +234,60 @@ turf/simulated/floor/update_icon()
 
 /turf/simulated/floor/is_plasteel_floor()
 	if(istype(floor_tile,/obj/item/stack/tile/plasteel))
-		return 1
+		return TRUE
 	else
-		return 0
+		return FALSE
 
 /turf/simulated/floor/is_light_floor()
 	if(istype(floor_tile,/obj/item/stack/tile/light))
-		return 1
+		return TRUE
 	else
-		return 0
+		return FALSE
 
 /turf/simulated/floor/is_grass_floor()
 	if(istype(floor_tile,/obj/item/stack/tile/grass))
-		return 1
+		return TRUE
 	else
-		return 0
+		return FALSE
 
 /turf/simulated/floor/is_wood_floor()
 	if(istype(floor_tile,/obj/item/stack/tile/wood))
-		return 1
+		return TRUE
 	else
-		return 0
+		return FALSE
+
+/turf/simulated/floor/is_tatami_floor()
+	if(istype(floor_tile,/obj/item/stack/tile/tatami))
+		return TRUE
+	else
+		return FALSE
 
 /turf/simulated/floor/is_carpet_floor()
 	if(istype(floor_tile,/obj/item/stack/tile/carpet))
-		return 1
+		return TRUE
 	else
-		return 0
+		return FALSE
 
 /turf/simulated/floor/is_arcade_floor()
 	if(istype(floor_tile,/obj/item/stack/tile/arcade))
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /turf/simulated/floor/is_slime_floor()
 	if(istype(floor_tile,/obj/item/stack/tile/slime))
-		return 1
+		return TRUE
 	else
-		return 0
+		return FALSE
 
 /turf/simulated/floor/is_plating()
 	if(!floor_tile)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /turf/simulated/floor/is_mineral_floor()
 	if(istype(floor_tile,/obj/item/stack/tile/mineral))
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /turf/simulated/floor/proc/break_tile()
 	if(istype(src,/turf/simulated/floor/engine))
@@ -283,22 +296,25 @@ turf/simulated/floor/update_icon()
 		return
 	if(is_plasteel_floor())
 		src.icon_state = "damaged[pick(1,2,3,4,5)]"
-		broken = 1
+		broken = TRUE
 	else if(is_light_floor())
 		src.icon_state = "light_broken"
-		broken = 1
+		broken = TRUE
 	else if(is_plating())
 		src.icon_state = "platingdmg[pick(1,2,3)]"
-		broken = 1
+		broken = TRUE
 	else if(is_wood_floor())
 		src.icon_state = "wood-broken"
-		broken = 1
+		broken = TRUE
+	else if(is_tatami_floor())
+		//src.icon_state = "wood-broken"
+		broken = TRUE
 	else if((is_carpet_floor()) || (is_arcade_floor()))
 		src.icon_state = "carpet-broken"
-		broken = 1
+		broken = TRUE
 	else if(is_grass_floor())
 		src.icon_state = "sand[pick("1","2","3")]"
-		broken = 1
+		broken = TRUE
 	else if(is_slime_floor())
 		spawn(rand(2,10))
 			make_plating()
@@ -322,22 +338,25 @@ turf/simulated/floor/update_icon()
 	if(istype(src,/turf/unsimulated/floor/asteroid))
 		return//Asteroid tiles don't burn
 	if(is_plasteel_floor())
-		src.icon_state = "damaged[pick(1,2,3,4,5)]"
+		icon_state = "damaged[pick(1,2,3,4,5)]"
 		burnt = 1
 	else if(is_plasteel_floor())
-		src.icon_state = "floorscorched[pick(1,2)]"
+		icon_state = "floorscorched[pick(1,2)]"
 		burnt = 1
 	else if(is_plating())
-		src.icon_state = "panelscorched"
+		icon_state = "panelscorched"
 		burnt = 1
 	else if(is_wood_floor())
-		src.icon_state = "wood-broken"
+		icon_state = "wood-broken"
+		burnt = 1
+	else if(is_tatami_floor())
+		//icon_state = "wood-broken"
 		burnt = 1
 	else if((is_carpet_floor()) || (is_arcade_floor()))
-		src.icon_state = "carpet-broken"
+		icon_state = "carpet-broken"
 		burnt = 1
 	else if(is_grass_floor())
-		src.icon_state = "sand[pick("1","2","3")]"
+		icon_state = "sand[pick("1","2","3")]"
 		burnt = 1
 	else if(is_mineral_floor())
 		burnt = 1
@@ -469,6 +488,24 @@ turf/simulated/floor/update_icon()
 			return
 	//if you gave a valid parameter, it won't get thisf ar.
 	floor_tile = getFromPool(/obj/item/stack/tile/wood, null)
+	update_icon()
+	levelupdate()
+
+/turf/simulated/floor/proc/make_tatami_floor(var/obj/item/stack/tile/tatami/T = null)
+	broken = 0
+	burnt = 0
+	intact = 1
+	plane = TURF_PLANE
+	if(floor_tile)
+		returnToPool(floor_tile)
+	floor_tile = null
+	if(T)
+		if(istype(T,/obj/item/stack/tile/tatami))
+			floor_tile = T
+			update_icon()
+			levelupdate()
+			return
+	floor_tile = getFromPool(/obj/item/stack/tile/tatami, null)
 	update_icon()
 	levelupdate()
 

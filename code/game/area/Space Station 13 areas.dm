@@ -82,7 +82,7 @@ var/list/teleportlocs = list()
 
 proc/process_teleport_locs()
 	for(var/area/AR in areas)
-		if(istype(AR, /area/shuttle) || istype(AR, /area/syndicate_station) || istype(AR, /area/wizard_station))
+		if(istype(AR, /area/shuttle) || istype(AR, /area/syndicate_station) || istype(AR, /area/wizard_station) || istype(AR, /area/ninja_dojo))
 			continue
 		if(teleportlocs.Find(AR.name))
 			continue
@@ -654,6 +654,13 @@ proc/process_adminbus_teleport_locs()
 	icon_state = "yellow"
 	requires_power = 0
 	dynamic_lighting = 0
+	shuttle_can_crush = FALSE
+
+/area/ninja_dojo
+	name = "\improper Ninja Dojo"
+	icon_state = "ninja_dojo"
+	requires_power = 0
+	dynamic_lighting = TRUE
 	shuttle_can_crush = FALSE
 
 /area/vox_station

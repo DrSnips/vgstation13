@@ -2,6 +2,7 @@
  * Contains:
  *		Grass
  *		Wood
+ *		Tatami
  *		Carpet
  */
 
@@ -108,6 +109,39 @@
 		return
 
 	. = ..()
+
+//Tatami mats
+/obj/item/stack/tile/tatami
+	name = "tatami mats"
+	singular_name = "tatami mat"
+	desc = "A vertical tatami mat."
+	icon_state = "tile-wood"
+	w_class = W_CLASS_MEDIUM
+	force = 1.0
+	throwforce = 1.0
+	throw_speed = 5
+	throw_range = 20
+	flags = FPRINT
+	siemens_coefficient = 0
+	max_amount = 60
+	//sheet_type = /obj/item/stack/sheet/wood
+	material = "tatami"
+	var/style = TRUE //TRUE and FALSE indicate Vertical or Horizontal respectively.
+
+/obj/item/stack/tile/tatami/attack_self(mob/user)
+	..()
+	style = !style
+	if(style)
+		desc = "A vertical tatami mat."
+		icon_state = "tile-wood"
+	else
+		desc = "A horizontal tatami mat."
+		icon_state = "tile-wood"
+	to_chat(user, "<span class='notice'>You rotate \the [src].</span>")
+
+/obj/item/stack/tile/tatami/turned
+	desc = "A horizontal tatami mat."
+	icon_state = "tile-wood"
 
 /*
  * Carpets

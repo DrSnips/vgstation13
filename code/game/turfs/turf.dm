@@ -269,29 +269,31 @@
 					P.reset()//fixing linear projectile movement
 
 /turf/proc/is_plating()
-	return 0
+	return FALSE
 /turf/proc/can_place_cables()
 	return is_plating()
 /turf/proc/is_asteroid_floor()
-	return 0
+	return FALSE
 /turf/proc/is_plasteel_floor()
-	return 0
+	return FALSE
 /turf/proc/is_light_floor()
-	return 0
+	return FALSE
 /turf/proc/is_grass_floor()
-	return 0
+	return FALSE
 /turf/proc/is_wood_floor()
-	return 0
+	return FALSE
+/turf/proc/is_tatami_floor()
+	return FALSE
 /turf/proc/is_carpet_floor()
-	return 0
+	return FALSE
 /turf/proc/is_arcade_floor()
-	return 0
+	return FALSE
 /turf/proc/is_slime_floor()
-	return 0
+	return FALSE
 /turf/proc/is_mineral_floor()
-	return 0
+	return FALSE
 /turf/proc/return_siding_icon_state()		//used for grass floors, which have siding.
-	return 0
+	return FALSE
 
 /turf/proc/inertial_drift(atom/movable/A as mob|obj)
 	if(!(A.last_move))
