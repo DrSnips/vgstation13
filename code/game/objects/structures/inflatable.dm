@@ -233,15 +233,8 @@
 	qdel(src)
 
 /obj/structure/inflatable/verb/hand_deflate()
-	set name = "Deflate"
-	set category = "Object"
-	set src in oview(1)
-
-	if(!isliving(usr) || usr.incapacitated() || !usr.Adjacent(src) || !usr.dexterity_check() || deflating)
-		return
-
-	verbs -= /obj/structure/inflatable/verb/hand_deflate
-	deflate()
+	if(
+		..()
 
 /obj/structure/inflatable/proc/update_nearby_tiles(var/turf/T)
 	if(!SS_READY(SSair))

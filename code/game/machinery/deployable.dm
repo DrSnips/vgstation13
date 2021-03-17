@@ -100,3 +100,49 @@
 	health -= amount * modifier
 	if(health <= 0)
 		explode()
+
+
+///Pop-up barriers///
+
+
+/obj/item/inflatable/wall/reinforced
+	name = "pop-up security barrier"
+	desc = "A collapsed slim inflatable wall reinforced with metal scissors mechanisms. Its rapid air pump has an ID scanner to activate it."
+	icon_state = "folded_wall"
+	deploy_path = /obj/structure/inflatable/wall/reinforced
+
+/obj/item/inflatable/proc/weld()
+	return
+
+
+/obj/structure/inflatable/wall/reinforced
+	name = "pop-up security barrier"
+	desc = "A slim inflatable wall reinforced with metal scissors mechanisms. Its rapid air pump has an ID scanner to activate it."
+	icon = 'icons/obj/inflatable.dmi'
+	icon_state = "wall"
+	undeploy_path = /obj/item/inflatable/wall/reinforced
+	health = 100
+	req_access = list(access_security)
+
+/obj/structure/inflatable/attackby(obj/item/I, mob/user)
+	if(isID(I) || isPDA(I) || isRoboID(I))
+		if(!isrobot(user))
+			if(!allowed(user))
+				to_chat(user, "<span class='warning'>Access denied.</span>")
+				return
+		hand_deflate()
+	else
+		..()
+
+
+/obj/structure/inflatable/verb/hand_deflate()
+	if(
+
+/obj/structure/inflatable/wall/reinforced/Cross() //Allow air to pass through it.
+	if(air_group)
+		return TRUE
+	if(istype(mover) && mover.checkpass(PASSGLASS))
+		return TRUE
+	return !density
+
+
